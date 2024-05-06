@@ -1,0 +1,78 @@
+name: 'Maintenance mode'
+
+description: 'Manage maintenance mode status'
+
+inputs:
+  slack-channel-id:
+    description: "Slack channel ID"
+    required: true
+
+  slack-bot-token:
+    description: "Slack bot token"
+    required: true
+
+  environment-name:
+    description: "Environment name"
+    required: true
+
+  environment-url:
+    description: "Environment URL"
+    required: true
+
+  service:
+    description: "Service name"
+    required: true
+
+  cluster:
+    description: "ECS cluster name"
+    required: true
+    
+  release-tag:
+    description: "Release tag"
+    required: true
+
+  update-ts:
+    description: "Slack message timestamp to update"
+    required: false
+
+  action:
+    description: "Notification action"
+    required: true
+    # choice: start, success, failure
+
+outputs:
+  ts:
+    description: "Slack message timestamp to update"
+    value: ${{ steps.slack.outputs.ts }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Prepare notification template
+      shell: bash
+      id: prepare-template
+      env:
+        action: ${{ inputs.action }}
+        environment_name: ${{ inputs.environment-name }}
+        environment_url: ${{ inputs.environment-url }}
+        github_actor: ${{ github.actor }}
+        service: ${{ inputs.service }}
+        release_tag: ${{ inputs.release-tag }}
+        github_release_url: "https://github.com/${{ github.repository }}/releases/tag/${{ inputs.service }}-${{ inputs.release-tag }}"
+        github_run_url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        ecs_url: "https://eu-central-1.console.aws.amazon.com/ecs/v2/clusters/${{ inputs.cluster }}/services/${{ inputs.service }}/deployments?region=eu-central-1"
+        datadog_url: "https://app.datadoghq.eu/logs?query=env%3A${{ inputs.environment-name }}%20service%3A${{ inputs.service }}"
+      run: |
+        notification_json=$(python3 render_template.py notification.json.j2 | jq -c .)
+        echo "content=$notification_json" >> $GITHUB_OUTPUT
+      working-directory: ${{ github.action_path }}
+
+    - name: Send Slack notification on ${{ inputs.action }}
+      uses: slackapi/slack-github-action@v1
+      id: slack
+      with:
+        channel-id: ${{ inputs.slack-channel-id }}
+        payload: ${{ steps.prepare-template.outputs.content }}
+        update-ts: ${{ inputs.update-ts }}
+      env:
+        SLACK_BOT_TOKEN: ${{ inputs.slack-bot-token }}

@@ -1,0 +1,129 @@
+{
+  {% if action == 'start' %}
+  "text": "Deployment to {{ environment_name }} has been triggered by @{{ github_actor }}",
+  {% elif action == 'success' %}
+  "text": "Deployment to {{ environment_name }} has been completed :white_check_mark:",
+  {% elif action == 'fail' %}
+  "text": "Deployment to {{ environment_name }} has failed :x:",
+  {% endif %}
+  "blocks": [
+    {
+      "type": "section",
+      "text": {
+        "type": "mrkdwn",
+        {% if action == 'start' %}
+        "text": "Deployment to *{{ environment_name }}* has been triggered by *@{{ github_actor }}*"
+        {% elif action == 'success' %}
+        "text": "Deployment to *{{ environment_name }}* has been completed :white_check_mark:"
+        {% elif action == 'fail' %}
+        "text": "Deployment to *{{ environment_name }}* has failed :x:"
+        {% endif %}
+      }
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": ":desktop_computer: Environment:"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "<{{ environment_url }}> ({{ environment_name }})"
+        }
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": ":1234: Version:"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "{{ service }} - <{{ github_release_url }}|{{ release_tag }}>"
+        }
+      ]
+    },
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "mrkdwn",
+          "text": ":hammer_and_wrench: Triggered by:"
+        },
+        {
+          "type": "mrkdwn",
+          "text": "@{{ github_actor }}"
+        }
+      ]
+    },
+    {
+      "type": "actions",
+      "elements": [
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "GitHub Actions Run",
+            "emoji": true
+          },
+          "url": "{{ github_run_url }}"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "ECS Deployment Info",
+            "emoji": true
+          },
+          "url": "{{ ecs_url }}"
+        },
+        {
+          "type": "button",
+          "text": {
+            "type": "plain_text",
+            "text": "DataDog logs",
+            "emoji": true
+          },
+          "url": "{{ datadog_url }}"
+        }
+      ]
+    },
+    {% if action == 'start' %}
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "plain_text",
+          "text": ":hourglass: In progress...",
+          "emoji": true
+        }
+      ]
+    }
+    {% elif action == 'success' %}
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "plain_text",
+          "text": ":white_check_mark: Deployment completed!",
+          "emoji": true
+        }
+      ]
+    }
+    {% elif action == 'fail' %}
+    {
+      "type": "context",
+      "elements": [
+        {
+          "type": "plain_text",
+          "text": ":x: Deployment failed!",
+          "emoji": true
+        }
+      ]
+    }
+    {% endif %}
+  ]
+}
