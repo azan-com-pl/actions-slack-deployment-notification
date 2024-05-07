@@ -3,7 +3,7 @@
   "text": "Deployment to {{ environment_name }} has been triggered by @{{ github_actor }}",
   {% elif action == 'success' %}
   "text": "Deployment to {{ environment_name }} has been completed :white_check_mark:",
-  {% elif action == 'fail' %}
+  {% elif action == 'failure' %}
   "text": "Deployment to {{ environment_name }} has failed :x:",
   {% endif %}
   "blocks": [
@@ -15,7 +15,7 @@
         "text": "Deployment to *{{ environment_name }}* has been triggered by *@{{ github_actor }}*"
         {% elif action == 'success' %}
         "text": "Deployment to *{{ environment_name }}* has been completed :white_check_mark:"
-        {% elif action == 'fail' %}
+        {% elif action == 'failure' %}
         "text": "Deployment to *{{ environment_name }}* has failed :x:"
         {% endif %}
       }
@@ -113,7 +113,7 @@
         }
       ]
     }
-    {% elif action == 'fail' %}
+    {% elif action == 'failure' %}
     {
       "type": "context",
       "elements": [
