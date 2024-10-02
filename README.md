@@ -32,3 +32,13 @@ Example:
       update-ts: ${{ steps.slack.outputs.ts }} # Update previous message instead of creating new one
     if: ${{ failure() }}
 ```
+
+## Running tests
+
+```sh
+brew install bash_unit
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-dev.txt
+bash_unit tests/*.sh
+```

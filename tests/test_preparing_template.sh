@@ -13,10 +13,12 @@ test_building_template_pwa() {
   output=$(render_template "preparing-pwa.json")
 
   assert_equals_jq "$output" '.text' "PWA build has been triggered by *@octocat* :tractor:, will be deployed to *test*"
+  assert_equals_jq "$output" '.blocks[0].text.text' "PWA build has been triggered by *@octocat* :tractor:, will be deployed to *test*"
 }
 
 test_building_template_magento() {
   output=$(render_template "preparing-magento.json")
 
   assert_equals_jq "$output" '.text' "Magento build has been triggered by *@octocat* :tractor:, will be deployed to *test*"
+  assert_equals_jq "$output" '.blocks[0].text.text' "Magento build has been triggered by *@octocat* :tractor:, will be deployed to *test*"
 }

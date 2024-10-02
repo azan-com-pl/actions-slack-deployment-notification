@@ -15,7 +15,7 @@
       "type": "section",
       "text": {
         "type": "mrkdwn",
-        {% if action == 'building' %}
+        {% if action == 'preparing' %}
         "text": "{{ service_formatted }} build has been triggered by *@{{ github_actor }}* :tractor:, will be deployed to *{{ environment_name }}*"
         {% elif action == 'start' %}
         "text": "Deployment to *{{ environment_name }}* has been triggered by *@{{ github_actor }}*"
