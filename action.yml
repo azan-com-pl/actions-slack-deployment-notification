@@ -61,7 +61,7 @@ runs:
         github_release_url: "https://github.com/${{ github.repository }}/releases/tag/${{ inputs.service }}-${{ inputs.release-tag }}"
         github_run_url: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         ecs_url: "https://eu-central-1.console.aws.amazon.com/ecs/v2/clusters/${{ inputs.cluster }}/services/${{ inputs.service }}/deployments?region=eu-central-1"
-        datadog_url: "https://app.datadoghq.eu/logs?query=env%3A${{ inputs.environment-name }}%20service%3A${{ inputs.service }}"
+        datadog_url: "https://app.datadoghq.eu/logs?query=env%3A${{ inputs.environment-name }}%20service%3A${{ inputs.service }}%20%40logger%3Astdout"
       run: |
         notification_json=$(python3 render_template.py notification.json.j2 | jq -c .)
         echo "content=$notification_json" >> $GITHUB_OUTPUT
