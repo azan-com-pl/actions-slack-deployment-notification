@@ -1,0 +1,2 @@
+export VIRTUAL_ENV=$PWD/.venv
+export PATH="$PWD/.venv/bin:/opt/homebrew/opt/python@3.12/libexec/bin:$PATH"

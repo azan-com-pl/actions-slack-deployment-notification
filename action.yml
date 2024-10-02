@@ -1,6 +1,6 @@
-name: 'Maintenance mode'
+name: 'Slack deployment notification'
 
-description: 'Manage maintenance mode status'
+description: 'Send Slack notification on deployment events'
 
 inputs:
   slack-channel-id:
@@ -38,7 +38,7 @@ inputs:
   action:
     description: "Notification action"
     required: true
-    # choice: start, success, failure
+    # choice: preparing, start, success, failure
 
 outputs:
   ts:

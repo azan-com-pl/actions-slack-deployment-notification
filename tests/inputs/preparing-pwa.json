@@ -1,0 +1,12 @@
+{
+  "action": "preparing",
+  "environment_name": "test",
+  "environment_url": "https://example.com",
+  "github_actor": "octocat",
+  "service": "pwa",
+  "release_tag": "v1.0.0",
+  "github_release_url": "https://github.com/release",
+  "github_run_url": "https://github.com/run",
+  "ecs_url": "https://ecs.aws.com/",
+  "datadog_url": "https://datadoghq.eu/"
+}
