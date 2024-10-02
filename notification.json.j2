@@ -1,6 +1,6 @@
 {
   {% if action == 'preparing' %}
-  "text": "{{ service_formatted }} build has been triggered by *@{{ github_actor }}* :tractor:, will be deployed to *{{ environment_name }}*",
+  "text": "{{ service_formatted }} build has been triggered by *@{{ github_actor }}* :tractor:",
   {% elif action == 'start' %}
   "text": "Deployment to {{ environment_name }} has been triggered by @{{ github_actor }} :hourglass:",
   {% elif action == 'success' %}
@@ -16,7 +16,7 @@
       "text": {
         "type": "mrkdwn",
         {% if action == 'preparing' %}
-        "text": "{{ service_formatted }} build has been triggered by *@{{ github_actor }}* :tractor:, will be deployed to *{{ environment_name }}*"
+        "text": "{{ service_formatted }} build has been triggered by *@{{ github_actor }}* :tractor:"
         {% elif action == 'start' %}
         "text": "Deployment to *{{ environment_name }}* has been triggered by *@{{ github_actor }}*"
         {% elif action == 'success' %}
@@ -28,6 +28,7 @@
         {% endif %}
       }
     },
+    {% if action != 'preparing' %}
     {
       "type": "context",
       "elements": [
@@ -41,6 +42,7 @@
         }
       ]
     },
+    {% endif %}
     {
       "type": "context",
       "elements": [

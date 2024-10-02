@@ -1,7 +1,7 @@
 {
   "action": "preparing",
-  "environment_name": "test",
-  "environment_url": "https://example.com",
+  "environment_name": "",
+  "environment_url": "",
   "github_actor": "octocat",
   "service": "pwa",
   "release_tag": "v1.0.0",
